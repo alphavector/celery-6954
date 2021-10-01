@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.8.6
+    volumes:
+      - "./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
+
+  worker:
+    build: .
+    command: sh -c "./wait-for-it.sh rabbitmq:5672  -- celery -A tasks worker --loglevel=DEBUG"
